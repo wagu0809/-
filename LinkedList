@@ -1,0 +1,108 @@
+class NotePoint(object):
+#链表的节点 节点分数据区和地址区
+#数据区存需要存的数据 地址区存下一节点的内存地址
+    def __init__(self, element, next_=None):
+        self._elem = element
+        self._next = next_
+
+    def get_elem(self):
+        return self._elem
+        
+class LinkedList(object):
+#链表 一种常见的基础数据结构 为一种线性表 但不会按线性的顺序存储数据 而是靠每个节点存储下一节点的指针
+#在python里通过使用变量名无数据类型的特性 和python解释器的垃圾回收机制 可以很简单得实现链表
+#以及使用链表来实现堆栈的特性
+    def __init__(self, head=None):
+        self._head = head
+        self._size = 0
+
+    def is_empty(self):
+        return self._head is None
+
+    def size(self):
+        return self._size
+
+    def add_front(self, elem):
+        self._head = NotePoint(elem, self._head)
+        self._size += 1
+
+    def add_tail(self, item):
+        if self.is_empty():
+            self._head = item
+        else:
+            p = self._head
+            while p:
+                p = p.next
+            p.next = NotePoint(item)
+        self._size += 1
+
+    def insert(self, index, item):
+        if index > self._size:
+            return
+        else:
+            p = self._head
+            while p and index - 1 > 0:
+                index -= 1
+                p = p.next
+            item.next = p.next
+            p.next = item
+            self._size += 1
+
+    def pop(self):
+        p = self._head
+        if p is None:
+            return None
+        elif p.next is None:
+            element = p.get_elem()
+            self._head = None
+            return element
+        else:
+            while p.next.next:
+                p = p.next
+            element = p.get_elem()
+            p.next = None
+            return element
+
+    def pop_head(self):
+        if self.is_empty():
+            return None
+        else:
+            element = self._head.get_elem()
+            self._head = self._head.next
+            return element
+
+    def remove(self, index):
+        if index > self._size:
+            return
+        else:
+            p = self._head
+            while p and index - 1 > 0:
+                p = p.next
+            p.next = p.next.next
+
+    def remove_head(self):
+        if self.is_empty():
+            pass
+        else:
+            self._head = self._head.next
+
+    def remove_tail(self):
+        if self.is_empty():
+            pass
+        elif self._head.next is None:
+            self._head = None
+        else:
+            p = self._head
+            while p.next.next:
+                p = p.next
+            p.next = None
+
+    def search(self, pred):
+        if self.is_empty():
+            return None
+        else:
+            p = self._head
+            while p:
+                if pred(p.get_elem()):
+                    return p.get_elem()
+                p = p.next
