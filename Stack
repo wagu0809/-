@@ -1,5 +1,5 @@
 class Stack(object):
-#Stack 栈 或者 堆栈 一种串列形式的抽象数据结构 只允许在一端进行push和pop操作
+#Stack 栈 或者 堆栈 一种串列形式的抽象数据结构 只允许在一端进行push和pop操作 先进后出（first in last out）
 #这里使用python中的列表list来进行简单的压栈和出栈的实现
     def __init__(self):
         self.__stack_list = []
