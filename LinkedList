@@ -58,17 +58,25 @@ class LinkedList(object):
         self.__size += 1
 
     def insert(self, index, elem):  # 在制定位置添加元素
-        if index > self.__size:
-            return
+        """
+        :param index: start from 0
+        :param elem:
+        :return:
+        """
+        if index <= 0:
+            self.prepend(elem)
+        elif index > self.size() - 1:
+            self.append(elem)
         else:
             p = self.__head
             note_item = NotePoint(elem)
-            while p and index - 1 > 0:
+            count = 0
+            while index - 1 > 0:
                 index -= 1
                 p = p.get_next()
             note_item.set_next(p.get_next())
             p.set_next(note_item)
-            self.__size += 1
+        self.__size += 1
 
     def pop(self):  # 从链表尾部pop元素
         p = self.__head
