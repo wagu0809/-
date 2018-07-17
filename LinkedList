@@ -1,20 +1,3 @@
-class NotePoint(object):
-#链接表的节点 节点分数据区和地址区
-#数据区存需要存的数据 地址区存下一节点的内存地址
-    def __init__(self, element, next_=None):
-        self.__elem = element
-        self.__next = next_
-
-    def get_elem(self):
-        return self.__elem
-
-    def get_next(self):  # 由于将元素和next域的变量设为了私有变量 不希望在类外对其直接调用 所以添加了get和set方法
-        return self.__next
-
-    def set_next(self, nnext):
-        self.__next = nnext
-
-
 class LinkedList(object):
 #链表 一种常见的基础数据结构 为一种线性表 但不会按线性的顺序存储数据 而是靠每个节点存储下一节点的指针
 #在python里通过使用变量名无数据类型的特性 和python解释器的垃圾回收机制 可以很简单得实现链表
@@ -31,7 +14,7 @@ class LinkedList(object):
         p = self.__head
         while p:
             str_all += "%d " % p.get_elem()
-            p = p.get_next()
+            p = p.next
         return str_all
 
     def is_empty(self):  # 判断链表是否为空
@@ -48,13 +31,13 @@ class LinkedList(object):
         note_item = NotePoint(elem)
         if self.is_empty():
             self.__head = note_item
-        elif self.__head.get_next() is None:
-            self.__head.set_next(note_item)
+        elif self.__head.next is None:
+            self.__head.next = note_item
         else:
             p = self.__head  # p是为了while循环设置的过渡变量
-            while p.get_next():
-                p = p.get_next()
-            p.set_next(note_item)
+            while p.next:
+                p = p.next
+            p.next = note_item
         self.__size += 1
 
     def insert(self, index, elem):  # 在制定位置添加元素
@@ -73,25 +56,25 @@ class LinkedList(object):
             count = 0
             while index - 1 > 0:
                 index -= 1
-                p = p.get_next()
-            note_item.set_next(p.get_next())
-            p.set_next(note_item)
+                p = p.next
+            note_item.next = p.next
+            p.next = note_item
         self.__size += 1
 
     def pop(self):  # 从链表尾部pop元素
         p = self.__head
         if p is None:
             return None
-        elif p.get_next() is None:  # 只有一个元素的时候
+        elif p.next is None:  # 只有一个元素的时候
             element = p.get_elem()
             self.__head = None
             self.__size -= 1
             return element
         else:
-            while p.get_next().get_next():
-                p = p.get_next()
-            element = p.get_next().get_elem()
-            p.set_next(None)
+            while p.next.next:
+                p = p.next
+            element = p.next.get_elem()
+            p.next = None
             self.__size -= 1
             return element
 
@@ -100,46 +83,14 @@ class LinkedList(object):
             return None
         else:
             element = self.__head.get_elem()
-            self.__head = self.__head.get_next()
+            self.__head = self.__head.next
             self.__size -= 1
             return element
 
-    # def remove(self, pred):  # remove方法暂时注释 在堆栈或队列中remove操作没有必要
-    #     p = self.__head
-    #     while p.next:
-    #         if pred(p.next.get_elem()):
-    #             p.next = p.next.next
-    #             return
-    #         else:
-    #             p = p.next
-    #
-    # def remove_head(self):
-    #     if self.is_empty():
-    #         return
-    #     else:
-    #         self.__size -= 1
-    #         self.__head = self.__head.next
-    #
-    # def remove_tail(self):
-    #     if self.is_empty():
-    #         pass
-    #     elif self.__head.next is None:
-    #         self.__size = 0
-    #         self.__head = None
-    #     else:
-    #         p = self.__head
-    #         while p.next.next:
-    #             p = p.next
-    #         p.next = None
-    #         self.__size -= 1
-
     def search(self, pred):  # 根据给定的搜索条件谓语来搜索元素
-        if self.is_empty():
-            return None
-        else:
-            p = self.__head
+        p = self.__head
+        if p:
             while p:
                 if pred(p.get_elem()):  # pred为自定义的方法 用来判断元素是否符合条件
-                    return p.get_elem()
-                p = p.get_next()
-            return None
+                    yield p.get_elem()
+                p = p.next
