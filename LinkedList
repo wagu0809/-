@@ -1,3 +1,15 @@
+class NodePoint(object):
+#链接表的节点 节点分数据区和地址区
+#数据区存需要存的数据 地址区存下一节点的内存地址
+    def __init__(self, element, next_=None):
+        self.__elem = element
+        self.next = next_  # next域的值需要按需修改 外部可以直接访问
+
+    def get_elem(self):  # 由于将元素域的变量设为了私有变量 不希望在类外对其直接调用并修改 所以添加了get方法 无set方法
+        return self.__elem
+
+
+
 class LinkedList(object):
 #链表 一种常见的基础数据结构 为一种线性表 但不会按线性的顺序存储数据 而是靠每个节点存储下一节点的指针
 #在python里通过使用变量名无数据类型的特性 和python解释器的垃圾回收机制 可以很简单得实现链表
@@ -24,11 +36,11 @@ class LinkedList(object):
         return self.__size
 
     def prepend(self, elem):  # 在链表首部添加元素
-        self.__head = NotePoint(elem, self.__head)
+        self.__head = NodePoint(elem, self.__head)
         self.__size += 1
 
     def append(self, elem):  # 在链表尾部添加元素
-        note_item = NotePoint(elem)
+        note_item = NodePoint(elem)
         if self.is_empty():
             self.__head = note_item
         elif self.__head.next is None:
@@ -52,7 +64,7 @@ class LinkedList(object):
             self.append(elem)
         else:
             p = self.__head
-            note_item = NotePoint(elem)
+            note_item = NodePoint(elem)
             count = 0
             while index - 1 > 0:
                 index -= 1
