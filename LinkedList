@@ -64,12 +64,10 @@ class LinkedList(object):
             self.append(elem)
         else:
             p = self.__head
-            note_item = NodePoint(elem)
-            count = 0
             while index - 1 > 0:
                 index -= 1
                 p = p.next
-            note_item.next = p.next
+            note_item = NodePoint(elem, p.next)
             p.next = note_item
         self.__size += 1
 
